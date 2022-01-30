@@ -1,13 +1,26 @@
 module.exports = {
-    webpack(config) {
+    webpack(config, options) {
         config.module.rules.push({
-            test: /\.svg$/,
-            issuer: {
-                test: /\.(js|ts)x?$/,
+            loader: '@svgr/webpack',
+            options: {
+                isssuer: /\.[jt]sx?$/,
+                prettier: false,
+                svgo: true,
+                svgoConfig: {
+                    plugins: [{
+                        name: 'preset-default',
+                        params: {
+                            override: {
+                                removeViewBox: false
+                            }
+                        }
+                    }],
+                },
+                titleProp: true,
             },
-            use: ['@svgr/webpack'],
+            test: /\.svg$/,
         });
 
         return config;
-    }
-}
+    },
+};
